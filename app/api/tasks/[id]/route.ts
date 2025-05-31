@@ -3,18 +3,10 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-type Context = {
-  params: {
-    id: string;
-  };
-};
-
-export async function GET(req: NextRequest, context: Context) {
-  const { id } = context.params;
-
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const task = await prisma.task.findUnique({
-      where: { id },
+      where: { id: params.id },
       include: { comments: true },
     });
 
@@ -23,53 +15,49 @@ export async function GET(req: NextRequest, context: Context) {
     }
 
     return NextResponse.json(task);
-  } catch {
+  } catch (error) {
     return NextResponse.json({ error: "Failed to fetch task" }, { status: 500 });
   }
 }
 
-export async function DELETE(req: NextRequest, context: Context) {
-  const { id } = context.params;
-
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     await prisma.task.delete({
-      where: { id },
+      where: { id: params.id },
     });
 
     return NextResponse.json({ message: "Task deleted" });
-  } catch {
+  } catch (error) {
     return NextResponse.json({ error: "Failed to delete task" }, { status: 500 });
   }
 }
 
-export async function PUT(req: NextRequest, context: Context) {
-  const { id } = context.params;
-  const data = await req.json();
-
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
+    const data = await req.json();
+
     const updatedTask = await prisma.task.update({
-      where: { id },
+      where: { id: params.id },
       data,
     });
 
     return NextResponse.json(updatedTask);
-  } catch {
+  } catch (error) {
     return NextResponse.json({ error: "Failed to update task" }, { status: 500 });
   }
 }
 
-export async function PATCH(req: NextRequest, context: Context) {
-  const { id } = context.params;
-  const updates = await req.json();
-
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
+    const updates = await req.json();
+
     const updatedTask = await prisma.task.update({
-      where: { id },
+      where: { id: params.id },
       data: updates,
     });
 
     return NextResponse.json(updatedTask);
-  } catch {
+  } catch (error) {
     return NextResponse.json({ error: "Failed to patch task" }, { status: 500 });
   }
 }
