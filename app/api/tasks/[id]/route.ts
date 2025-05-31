@@ -3,28 +3,11 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// DELETE /api/tasks/:id
-export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
-
-  try {
-    await prisma.task.delete({
-      where: { id },
-    });
-
-    return NextResponse.json({ message: "Task deleted" });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to delete task" }, { status: 500 });
-  }
-}
-
 // GET /api/tasks/:id
-export async function GET(request: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
-
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const task = await prisma.task.findUnique({
-      where: { id },
+      where: { id: params.id },
       include: { comments: true },
     });
 
@@ -38,14 +21,26 @@ export async function GET(request: NextRequest, context: { params: { id: string 
   }
 }
 
-// PUT /api/tasks/:id
-export async function PUT(request: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
-  const data = await request.json();
-
+// DELETE /api/tasks/:id
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
+    await prisma.task.delete({
+      where: { id: params.id },
+    });
+
+    return NextResponse.json({ message: "Task deleted" });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to delete task" }, { status: 500 });
+  }
+}
+
+// PUT /api/tasks/:id
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const data = await req.json();
+
     const updatedTask = await prisma.task.update({
-      where: { id },
+      where: { id: params.id },
       data,
     });
 
@@ -56,18 +51,16 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
 }
 
 // PATCH /api/tasks/:id
-export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
-
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const updates = await request.json();
+    const updates = await req.json();
 
     const updatedTask = await prisma.task.update({
-      where: { id },
+      where: { id: params.id },
       data: updates,
     });
 
-    return NextResponse.json(updatedTask); // ✅ Trebuie să returnezi un JSON valid
+    return NextResponse.json(updatedTask);
   } catch (error) {
     return NextResponse.json({ error: "Failed to patch task" }, { status: 500 });
   }
