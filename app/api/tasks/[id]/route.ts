@@ -1,13 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// GET /api/tasks/:id
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+interface RouteContext {
+  params: {
+    id: string;
+  };
+}
+
+export async function GET(req: NextRequest, context: RouteContext) {
   try {
     const task = await prisma.task.findUnique({
-      where: { id: params.id },
+      where: { id: context.params.id },
       include: { comments: true },
     });
 
@@ -21,11 +27,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-// DELETE /api/tasks/:id
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: RouteContext) {
   try {
     await prisma.task.delete({
-      where: { id: params.id },
+      where: { id: context.params.id },
     });
 
     return NextResponse.json({ message: "Task deleted" });
@@ -34,13 +39,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   }
 }
 
-// PUT /api/tasks/:id
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: RouteContext) {
   try {
     const data = await req.json();
 
     const updatedTask = await prisma.task.update({
-      where: { id: params.id },
+      where: { id: context.params.id },
       data,
     });
 
@@ -50,13 +54,12 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-// PATCH /api/tasks/:id
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, context: RouteContext) {
   try {
     const updates = await req.json();
 
     const updatedTask = await prisma.task.update({
-      where: { id: params.id },
+      where: { id: context.params.id },
       data: updates,
     });
 
