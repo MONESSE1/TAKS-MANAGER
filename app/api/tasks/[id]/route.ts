@@ -1,14 +1,13 @@
-//
-
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params;
   try {
     const task = await prisma.task.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { comments: true },
     });
 
@@ -22,10 +21,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params;
   try {
     await prisma.task.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ message: "Task deleted" });
@@ -33,13 +33,14 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ error: "Failed to delete task" }, { status: 500 });
   }
 }
-//pentru editare inca nu e implementata pe site
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+
+export async function PUT(req: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params;
   try {
     const data = await req.json();
 
     const updatedTask = await prisma.task.update({
-      where: { id: params.id },
+      where: { id },
       data,
     });
 
@@ -49,12 +50,13 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params;
   try {
     const updates = await req.json();
 
     const updatedTask = await prisma.task.update({
-      where: { id: params.id },
+      where: { id },
       data: updates,
     });
 
