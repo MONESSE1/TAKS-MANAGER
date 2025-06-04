@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState } from 'react';
-import themes from '@/app/context/themes'; // ✅ default import
+import themes from '@/app/context/themes';
 
 export const GlobalContext = createContext({
   theme: themes.default,

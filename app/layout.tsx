@@ -7,7 +7,7 @@ import Providers from "./Providers/Providers";
 import ThemeWrapper from "@/app/Componets/ThemeWrapper/ThemeWrapper";
 import { ClerkProvider } from '@clerk/nextjs';
 import ClientAuthWrapper from "@/app/Componets/ClientAuthWrapper/ClientAuthWrapper";
-import Sidebar from "@/app/Componets/Sidebar/Sidebar"; // ADĂUGĂ asta
+import Sidebar from "@/app/Componets/Sidebar/Sidebar"; 
 import styled from "styled-components";
 
 const geistSans = Geist({

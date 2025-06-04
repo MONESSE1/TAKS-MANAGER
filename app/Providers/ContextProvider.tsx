@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { GlobalProvider } from "../context/globalProvider"; // aici corect: GlobalProvider
+import { GlobalProvider } from "../context/globalProvider"; 
 
 interface Props {
   children: React.ReactNode;

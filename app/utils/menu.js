@@ -8,7 +8,7 @@ export const menu = [
     link: "/",
   },
   {
-    id: 3,
+    id: 2,
     title: "Parteneri",
     icon: check,
     link: "/Parteneri",

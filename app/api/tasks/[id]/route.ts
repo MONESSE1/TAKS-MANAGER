@@ -1,3 +1,5 @@
+//
+
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
@@ -31,7 +33,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ error: "Failed to delete task" }, { status: 500 });
   }
 }
-
+//pentru editare inca nu e implementata pe site
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const data = await req.json();

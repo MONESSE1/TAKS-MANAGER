@@ -5,19 +5,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import menu from "@/app/utils/menu";
 import { usePathname, useRouter } from "next/navigation";
-import { useClerk } from "@clerk/nextjs"; // 👈 ADĂUGAT
+import { useClerk } from "@clerk/nextjs"; 
 
 function Sidebar() {
   const { theme } = useGlobalState();
   const router = useRouter();
   const pathname = usePathname();
-  const { signOut } = useClerk(); // 👈 ADĂUGAT
+  const { signOut } = useClerk();
 
   const handleClick = (link: string) => {
     router.push(link);
   };
 
-  const handleLogout = () => { // 👈 ADĂUGAT
+  const handleLogout = () => {  
     signOut(() => {
       window.location.href = "/sign-in";
     });
@@ -37,7 +37,7 @@ function Sidebar() {
           />
         </div>
         <h1>
-          <span>Mone</span>
+          <span>Eduard</span>
         </h1>
       </div>
 
@@ -57,7 +57,7 @@ function Sidebar() {
         })}
       </ul>
 
-      {/* 👇 Butonul de logout fără modificări la CSS */}
+      {}
       <button onClick={handleLogout}>Log Out</button>
     </SidebarStyled>
   );

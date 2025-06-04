@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { title, description, dueDate, important = false, assignedTo = null } = body;
 
-    // Validare de bază
+    // Validare
     if (!title || typeof title !== "string") {
       return NextResponse.json({ error: "Title is required" }, { status: 400 });
     }
